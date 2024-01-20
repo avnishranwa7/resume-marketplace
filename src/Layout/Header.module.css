@@ -1,0 +1,35 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  font-weight: 600;
+  border-bottom: 1px solid #ccc;
+  box-shadow: 0.1px 0.1px 10px rgb(79, 79, 79);
+}
+
+.mobile-menu {
+  font-size: 1.7rem;
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  font-size: 1.3rem;
+}
+
+.market {
+  color: #869505;
+}
+
+.place {
+  color: #048741;
+}
+
+@media screen and (min-width: 600px) {
+  .header {
+    justify-content: center;
+  }
+  .mobile-menu {
+    display: none;
+  }
+}
