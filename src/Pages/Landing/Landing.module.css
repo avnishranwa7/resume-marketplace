@@ -1,0 +1,131 @@
+.landing {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  flex-grow: 1;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.resume {
+  max-width: 80%;
+}
+
+.resume img {
+  width: 100%;
+}
+
+.explore,
+.create {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.8rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.explore h1,
+.create h1 {
+  border-radius: 10px;
+  padding: 0.5rem;
+  background: white;
+  margin: 0;
+}
+
+.explore h1 {
+  border: 1px solid #869505;
+  box-shadow: 0.1px 0.1px 5px #869505;
+}
+
+.create h1 {
+  border: 1px solid #048741;
+  box-shadow: 0.1px 0.1px 5px #048741;
+}
+
+.recruiters {
+  color: #869505;
+}
+
+.job-seekers {
+  color: #048741;
+}
+
+.item-2 {
+  align-self: flex-end;
+}
+
+.item-number {
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 0.2rem;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.explore .item-number {
+  background-color: #869505;
+}
+
+.create .item-number {
+  background-color: #048741;
+}
+
+h1 {
+  font-weight: 500;
+}
+
+h2 {
+  font-weight: 400;
+}
+
+p {
+  margin-top: 0;
+  width: 80%;
+  font-weight: 400;
+  font-size: 1rem;
+}
+
+h1,
+h2,
+p {
+  text-align: center;
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  list-style-type: none;
+  padding: 0;
+  margin-top: 0;
+  width: 100%;
+  align-items: flex-start;
+}
+
+li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1rem;
+  margin: 0.5rem;
+  width: 50%;
+  text-align: center;
+}
+
+hr {
+  width: 50%;
+}
+
+@media screen and (min-width: 600px) {
+  .resume {
+    max-width: 30%;
+  }
+
+  ul {
+    flex-direction: row;
+  }
+
+  .item-2 {
+    align-self: flex-start;
+  }
+}

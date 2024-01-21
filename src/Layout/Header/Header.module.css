@@ -1,0 +1,113 @@
+.header {
+  position: fixed;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  border-bottom: 1px solid #ccc;
+  box-shadow: 0.1px 0.1px 10px #4f4f4f;
+  background: white;
+  z-index: 1;
+}
+
+.mobile-nav {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  height: 100%;
+  width: 80%;
+  background: white;
+  transition: transform 500ms;
+  z-index: 1;
+}
+
+.open {
+  transform: translateX(0);
+}
+
+.close {
+  transform: translateX(-100%);
+}
+
+.mobile-nav button {
+  position: absolute;
+  right: 0;
+}
+
+.mobile-nav .links {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.web-links {
+  display: none;
+  width: fit-content;
+  margin: 0;
+  align-items: center;
+}
+
+.web-links li {
+  width: fit-content;
+}
+
+.links .explore a,
+.web-links .explore a {
+  color: #869505;
+}
+
+.links .create a,
+.web-links .create a {
+  color: #048741;
+}
+
+.mobile-menu {
+  font-size: 1.7rem;
+  display: flex;
+  align-items: center;
+  margin: 1rem;
+}
+
+.logo {
+  font-size: 1.3rem;
+  margin: 1rem;
+}
+
+.market {
+  color: #869505;
+}
+
+.place {
+  color: #048741;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+@media screen and (min-width: 600px) {
+  .header {
+    justify-content: center;
+  }
+
+  .logo {
+    flex-grow: 1;
+  }
+
+  .mobile-nav {
+    display: none;
+  }
+
+  .mobile-menu {
+    display: none;
+  }
+
+  .web-links {
+    display: flex;
+  }
+}
