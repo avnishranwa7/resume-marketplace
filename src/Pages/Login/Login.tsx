@@ -7,7 +7,8 @@ import classes from "./Login.module.css";
 
 // local imports
 import Input from "../../components/Input";
-import { login } from "../../redux/auth";
+import { login as loginStore } from "../../redux/auth";
+import { AuthService } from "../../services/auth";
 
 interface FormType {
   name: string | undefined;
@@ -68,27 +69,29 @@ const Login = () => {
 
   const navigate = useNavigate();
 
+  async function login() {
+    return AuthService.login({
+      email: formState.email,
+      password: formState.password,
+      ...(!loginSelected && { name: formState.name }),
+      ...(!loginSelected && { confirmPassword: formState.confirmPassword }),
+    });
+  }
+
+  async function signup() {
+    return AuthService.signup({
+      email: formState.email,
+      password: formState.password,
+      ...(!loginSelected && { name: formState.name }),
+      ...(!loginSelected && { confirmPassword: formState.confirmPassword }),
+    });
+  }
+
   async function submitForm(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     formErrorsDispatch({ property: "call", value: "" });
-    const response = await fetch(
-      `http://ec2-13-211-174-173.ap-southeast-2.compute.amazonaws.com:3000/auth/${
-        loginSelected ? "login" : "signup"
-      }`,
-      {
-        method: `${loginSelected ? "POST" : "PUT"}`,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: formState.email,
-          password: formState.password,
-          ...(!loginSelected && { name: formState.name }),
-          ...(!loginSelected && { confirmPassword: formState.confirmPassword }),
-        }),
-      }
-    );
+    const response = loginSelected ? await login() : await signup();
 
     const data = await response.json();
     if (response.status === 422) {
@@ -98,7 +101,7 @@ const Login = () => {
     }
 
     if (response.status === 201) {
-      login({ userId: data.userId, email: data.email });
+      loginStore({ userId: data.userId, email: data.email });
       localStorage.setItem(
         "auth",
         JSON.stringify({ userId: data.userId, email: data.email })
