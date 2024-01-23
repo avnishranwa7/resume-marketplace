@@ -2,7 +2,7 @@ export class AuthService {
   static baseUrl =
     process.env.NODE_ENV === "development"
       ? "http://localhost:3001"
-      : "http://backend.resume-marketplace.com";
+      : "https://backend.resume-marketplace.com";
 
   static login = (data: any) => {
     return fetch(this.baseUrl + "/auth/login", {
