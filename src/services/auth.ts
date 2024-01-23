@@ -19,4 +19,12 @@ export class AuthService {
       body: JSON.stringify(data),
     });
   };
+
+  static verify = (email: string) => {
+    return fetch(this.baseUrl + "/auth/verify", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+  };
 }
