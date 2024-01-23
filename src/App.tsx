@@ -7,6 +7,7 @@ import classes from "./App.module.css";
 import RootLayout from "./Layout/RootLayout";
 import Landing from "./Pages/Landing/Landing";
 import Login from "./Pages/Login/Login";
+import Verification from "./Pages/Login/Verification";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: <Login />,
+      },
+      {
+        path: "verify",
+        element: <Verification />,
       },
     ],
   },

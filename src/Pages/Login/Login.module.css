@@ -45,4 +45,9 @@ form button {
   .mobile-error {
     display: none;
   }
+
+  .actions,
+  form {
+    font-size: 1.2rem;
+  }
 }

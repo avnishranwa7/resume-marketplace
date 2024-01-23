@@ -2,6 +2,10 @@ import { FormEvent, useState, useReducer } from "react";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
+// icons imports
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+
 // styles imports
 import classes from "./Login.module.css";
 
@@ -59,12 +63,41 @@ function formReducer(state: FormType, action: ActionType): FormType {
   return state;
 }
 
+interface ShowPasswordType {
+  password: boolean;
+  confirmPassword: boolean;
+}
+
+const showPasswordInitialState: ShowPasswordType = {
+  password: false,
+  confirmPassword: false,
+};
+
+function showPasswordReducer(
+  state: ShowPasswordType,
+  action: "password" | "confirmPassword"
+) {
+  if (action === "password") {
+    return { ...state, password: !state.password };
+  }
+
+  if (action === "confirmPassword") {
+    return { ...state, confirmPassword: !state.confirmPassword };
+  }
+
+  return state;
+}
+
 const Login = () => {
   const [loginSelected, setLoginSelected] = useState(true);
   const [formState, formDispatch] = useReducer(formReducer, formInitialState);
   const [formErrors, formErrorsDispatch] = useReducer(
     formReducer,
     formInitialState
+  );
+  const [showPassword, showPasswordDispatch] = useReducer(
+    showPasswordReducer,
+    showPasswordInitialState
   );
 
   const navigate = useNavigate();
@@ -106,7 +139,7 @@ const Login = () => {
         "auth",
         JSON.stringify({ userId: data.userId, email: data.email })
       );
-      navigate("/");
+      navigate(`/verify?email=${data.email}`);
     }
   }
 
@@ -123,6 +156,7 @@ const Login = () => {
           variant="outlined"
           className={loginSelected ? classes.focused : undefined}
           onClick={changeView}
+          sx={{ fontSize: "inherit" }}
         >
           Login
         </Button>
@@ -130,6 +164,7 @@ const Login = () => {
           variant="outlined"
           className={!loginSelected ? classes.focused : undefined}
           onClick={changeView}
+          sx={{ fontSize: "inherit" }}
         >
           Sign Up
         </Button>
@@ -167,13 +202,17 @@ const Login = () => {
           inputProps={{
             id: "password",
             placeholder: "Password",
-            type: "password",
+            type: showPassword.password ? "text" : "password",
             value: formState.password ?? "",
             onChange: (e) =>
               formDispatch({ property: "password", value: e.target.value }),
             required: true,
           }}
           error={formErrors.password}
+          Icon={
+            showPassword.password ? <VisibilityIcon /> : <VisibilityOffIcon />
+          }
+          iconClick={() => showPasswordDispatch("password")}
         />
         <span className={classes["mobile-error"]}>
           {formErrors.confirmPassword}
@@ -183,7 +222,7 @@ const Login = () => {
             inputProps={{
               id: "confirmPassword",
               placeholder: "Confirm Password",
-              type: "password",
+              type: showPassword.confirmPassword ? "text" : "password",
               value: formState.confirmPassword ?? "",
               onChange: (e) =>
                 formDispatch({
@@ -193,9 +232,17 @@ const Login = () => {
               required: true,
             }}
             error={formErrors.confirmPassword}
+            Icon={
+              showPassword.confirmPassword ? (
+                <VisibilityIcon />
+              ) : (
+                <VisibilityOffIcon />
+              )
+            }
+            iconClick={() => showPasswordDispatch("confirmPassword")}
           />
         )}
-        <Button variant="outlined" type="submit">
+        <Button variant="outlined" type="submit" sx={{ fontSize: "inherit" }}>
           {loginSelected ? "Login" : "Sign Up"}
         </Button>
       </form>
