@@ -27,4 +27,12 @@ export class AuthService {
       body: JSON.stringify({ email }),
     });
   };
+
+  static completeVerification = (email: string, token: string) => {
+    return fetch(this.baseUrl + "/auth/complete-verification", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, token }),
+    });
+  };
 }
