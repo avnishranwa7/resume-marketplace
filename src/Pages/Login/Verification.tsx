@@ -51,7 +51,7 @@ const Verification = () => {
 
 export default Verification;
 
-const VerificationDiv = styled.div`
+export const VerificationDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -65,7 +65,7 @@ const VerificationDiv = styled.div`
   }
 `;
 
-const ImageDiv = styled.div`
+export const ImageDiv = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;

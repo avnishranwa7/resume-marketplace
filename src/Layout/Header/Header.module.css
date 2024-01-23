@@ -44,6 +44,10 @@
   flex-grow: 1;
 }
 
+.mobile-nav .links li {
+  font-size: 1.2rem;
+}
+
 .web-links {
   display: none;
   width: fit-content;
@@ -53,6 +57,7 @@
 
 .web-links li {
   width: fit-content;
+  font-size: 1.2rem;
 }
 
 .links .explore a,
@@ -109,5 +114,17 @@ a {
 
   .web-links {
     display: flex;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .logo {
+    font-size: 1.6rem;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .web-links li {
+    font-size: 1.4rem;
   }
 }

@@ -1,6 +1,8 @@
 import { FormEvent, useState, useReducer } from "react";
 import { Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Alert from "@mui/material/Alert";
 
 // icons imports
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -13,6 +15,7 @@ import classes from "./Login.module.css";
 import Input from "../../components/Input";
 import { login as loginStore } from "../../redux/auth";
 import { AuthService } from "../../services/auth";
+import { RootState } from "../../redux";
 
 interface FormType {
   name: string | undefined;
@@ -101,6 +104,16 @@ const Login = () => {
   );
 
   const navigate = useNavigate();
+  const prevPath = useSelector((state: RootState) => state.navigate.path);
+  const params = useLocation().search;
+  let urlError = "";
+  let urlSuccess = "";
+  if (params.split("error").length > 1) {
+    urlError = params.split("error")[1].substring(1);
+  }
+  if (params.split("success").length > 1) {
+    urlSuccess = params.split("success")[1].substring(1);
+  }
 
   async function login() {
     return AuthService.login({
@@ -151,6 +164,32 @@ const Login = () => {
 
   return (
     <div className={classes.auth}>
+      <div className={classes.alert}>
+        {prevPath === "/create-marketplace" && (
+          <Alert
+            severity="warning"
+            sx={{ marginBottom: "1rem", fontSize: "inherit" }}
+          >
+            You must be logged in to create a marketplace
+          </Alert>
+        )}
+        {urlError !== "" && (
+          <Alert
+            severity="warning"
+            sx={{ marginBottom: "1rem", fontSize: "inherit" }}
+          >
+            {decodeURIComponent(urlError)}
+          </Alert>
+        )}
+        {urlSuccess !== "" && (
+          <Alert
+            severity="success"
+            sx={{ marginBottom: "1rem", fontSize: "inherit" }}
+          >
+            {decodeURIComponent(urlSuccess)}
+          </Alert>
+        )}
+      </div>
       <div className={classes.actions}>
         <Button
           variant="outlined"
