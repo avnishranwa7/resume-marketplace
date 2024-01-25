@@ -10,6 +10,8 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 
 interface InputType {
+  id: string;
+  labelText?: string;
   inputProps?: InputProps;
   inputCSSProps?: CSSProps;
   Icon?: ReactElement;
@@ -18,6 +20,8 @@ interface InputType {
 }
 
 const Input: FC<InputType> = ({
+  id,
+  labelText,
   inputProps,
   inputCSSProps,
   Icon,
@@ -25,43 +29,47 @@ const Input: FC<InputType> = ({
   iconClick,
 }) => {
   return (
-    <InputDiv>
-      <input
-        {...inputProps}
-        style={{
-          margin: 0,
-          width: "100%",
-          border: "none",
-          padding: "0.5rem",
-          outline: "none",
-          fontSize: "inherit",
-          ...{ inputCSSProps },
-        }}
-      />
-      {Icon && <IconButton onClick={iconClick}>{Icon}</IconButton>}
-      {error === "" && (
-        <CheckCircleOutlineIcon
-          sx={{
-            fontSize: "1.2rem",
-            color: "green",
-            paddingRight: "0.5rem",
-            paddingLeft: "0.5rem",
+    <>
+      {labelText && <label htmlFor={id}>{labelText}</label>}
+      <InputDiv>
+        <input
+          {...inputProps}
+          id={id}
+          style={{
+            margin: 0,
+            width: "100%",
+            border: "none",
+            padding: "0.5rem",
+            outline: "none",
+            fontSize: "inherit",
+            ...{ inputCSSProps },
           }}
         />
-      )}
-      {error && error !== "" && (
-        <Tooltip title={error}>
-          <CloseOutlinedIcon
+        {Icon && <IconButton onClick={iconClick}>{Icon}</IconButton>}
+        {error === "" && (
+          <CheckCircleOutlineIcon
             sx={{
               fontSize: "1.2rem",
-              color: "red",
+              color: "green",
               paddingRight: "0.5rem",
               paddingLeft: "0.5rem",
             }}
           />
-        </Tooltip>
-      )}
-    </InputDiv>
+        )}
+        {error && error !== "" && (
+          <Tooltip title={error}>
+            <CloseOutlinedIcon
+              sx={{
+                fontSize: "1.2rem",
+                color: "red",
+                paddingRight: "0.5rem",
+                paddingLeft: "0.5rem",
+              }}
+            />
+          </Tooltip>
+        )}
+      </InputDiv>
+    </>
   );
 };
 
