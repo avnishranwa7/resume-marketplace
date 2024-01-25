@@ -39,7 +39,7 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Landing />,
-        loader: () => loaderFn,
+        loader: loaderFn,
       },
       {
         path: "login",
