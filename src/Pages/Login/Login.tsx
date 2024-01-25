@@ -239,8 +239,8 @@ const Login = () => {
         <span className={classes["mobile-error"]}>{formErrors.name}</span>
         {!loginSelected && (
           <Input
+            id="name"
             inputProps={{
-              id: "name",
               placeholder: "Name",
               value: formState.name ?? "",
               onChange: (e) =>
@@ -252,8 +252,8 @@ const Login = () => {
         )}
         <span className={classes["mobile-error"]}>{formErrors.email}</span>
         <Input
+          id="email"
           inputProps={{
-            id: "email",
             placeholder: "Email",
             type: "email",
             value: formState.email ?? "",
@@ -265,8 +265,8 @@ const Login = () => {
         />
         <span className={classes["mobile-error"]}>{formErrors.password}</span>
         <Input
+          id="password"
           inputProps={{
-            id: "password",
             placeholder: "Password",
             type: showPassword.password ? "text" : "password",
             value: formState.password ?? "",
@@ -285,8 +285,8 @@ const Login = () => {
         </span>
         {!loginSelected && (
           <Input
+            id="confirmPassword"
             inputProps={{
-              id: "confirmPassword",
               placeholder: "Confirm Password",
               type: showPassword.confirmPassword ? "text" : "password",
               value: formState.confirmPassword ?? "",
