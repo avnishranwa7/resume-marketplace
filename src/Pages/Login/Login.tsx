@@ -1,7 +1,7 @@
-import { FormEvent, useState, useReducer } from "react";
+import { FormEvent, useState, useReducer, useEffect } from "react";
 import { Button } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Alert from "@mui/material/Alert";
 
 // icons imports
@@ -92,6 +92,15 @@ function showPasswordReducer(
 }
 
 const Login = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const loggedIn = useSelector((state: RootState) => state.auth.logged_in);
+
+  useEffect(() => {
+    if (loggedIn) navigate("/");
+  }, [loggedIn, navigate]);
+
   const [loginSelected, setLoginSelected] = useState(true);
   const [formState, formDispatch] = useReducer(formReducer, formInitialState);
   const [formErrors, formErrorsDispatch] = useReducer(
@@ -102,8 +111,8 @@ const Login = () => {
     showPasswordReducer,
     showPasswordInitialState
   );
+  const [generalError, setGeneralError] = useState("");
 
-  const navigate = useNavigate();
   const prevPath = useSelector((state: RootState) => state.navigate.path);
   const params = useLocation().search;
   let urlError = "";
@@ -136,6 +145,7 @@ const Login = () => {
   async function submitForm(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
+    setGeneralError("");
     formErrorsDispatch({ property: "call", value: "" });
     const response = loginSelected ? await login() : await signup();
 
@@ -146,13 +156,22 @@ const Login = () => {
       }
     }
 
-    if (response.status === 201) {
-      loginStore({ userId: data.userId, email: data.email });
+    if (response.status === 401) {
+      setGeneralError(data.message);
+    }
+
+    if (response.status === 200 || response.status === 201) {
+      dispatch(loginStore({ userId: data.userId, email: data.email }));
       localStorage.setItem(
         "auth",
         JSON.stringify({ userId: data.userId, email: data.email })
       );
-      navigate(`/verify?email=${data.email}`);
+
+      if (response.status === 200)
+        navigate(
+          `${prevPath === "/create-marketplace" ? "/create-marketplace" : "/"}`
+        );
+      if (response.status === 201) navigate(`/verify?email=${data.email}`);
     }
   }
 
@@ -165,6 +184,14 @@ const Login = () => {
   return (
     <div className={classes.auth}>
       <div className={classes.alert}>
+        {generalError !== "" && (
+          <Alert
+            severity="error"
+            sx={{ marginBottom: "1rem", fontSize: "inherit" }}
+          >
+            {generalError}
+          </Alert>
+        )}
         {prevPath === "/create-marketplace" && (
           <Alert
             severity="warning"

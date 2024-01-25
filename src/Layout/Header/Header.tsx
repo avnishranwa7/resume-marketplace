@@ -1,4 +1,5 @@
 import { FC, useState } from "react";
+import { IconButton } from "@mui/material";
 
 // icons imports
 import MenuIcon from "@mui/icons-material/Menu";
@@ -6,10 +7,10 @@ import CloseIcon from "@mui/icons-material/Close";
 
 // styles imports
 import classes from "./Header.module.css";
-import { IconButton } from "@mui/material";
 
 const Header = () => {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
   return (
     <header className={classes.header}>
       <MobileNav open={mobileNavOpen} close={() => setMobileNavOpen(false)} />

@@ -12,6 +12,24 @@ import CreateMarketplace from "./Pages/Create-Marketplace";
 import { store } from "./redux/index";
 import { update } from "./redux/navigate";
 import CompleteVerification from "./Pages/Login/CompleteVerification";
+import { login } from "./redux/auth";
+
+function persistUser() {
+  if (localStorage.getItem("auth")) {
+    store.dispatch(
+      login({
+        userId: JSON.parse(localStorage.getItem("auth")!).userId,
+        email: JSON.parse(localStorage.getItem("auth")!).email,
+      })
+    );
+  }
+}
+
+function loaderFn() {
+  store.dispatch(update({ path: window.location.pathname }));
+  persistUser();
+  return 0;
+}
 
 const router = createBrowserRouter([
   {
@@ -21,32 +39,27 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Landing />,
-        loader: () =>
-          store.dispatch(update({ path: window.location.pathname })),
+        loader: () => loaderFn,
       },
       {
         path: "login",
         element: <Login />,
-        loader: () =>
-          store.dispatch(update({ path: window.location.pathname })),
+        loader: loaderFn,
       },
       {
         path: "verify",
         element: <Verification />,
-        loader: () =>
-          store.dispatch(update({ path: window.location.pathname })),
+        loader: loaderFn,
       },
       {
         path: "create-marketplace",
         element: <CreateMarketplace />,
-        loader: () =>
-          store.dispatch(update({ path: window.location.pathname })),
+        loader: loaderFn,
       },
       {
         path: "complete-verification",
         element: <CompleteVerification />,
-        loader: () =>
-          store.dispatch(update({ path: window.location.pathname })),
+        loader: loaderFn,
       },
     ],
   },
