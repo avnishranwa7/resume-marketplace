@@ -7,7 +7,7 @@ const RootLayout = () => {
   return (
     <>
       <Header />
-      <div style={{ margin: "93px 2rem" }}>
+      <div style={{ marginTop: "93px" }}>
         <Outlet />
       </div>
     </>

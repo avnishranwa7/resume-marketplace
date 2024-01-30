@@ -1,0 +1,104 @@
+.marketplace {
+  margin-top: 0;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.add {
+  width: 100%;
+}
+
+.add .mobile-view {
+  width: 100%;
+}
+
+.add .laptop-view {
+  padding: 1rem;
+  transition: transform 1s;
+  display: flex;
+  flex-direction: column;
+}
+
+.laptop-view .submit-button {
+  font-size: inherit;
+  width: fit-content;
+  align-self: center;
+  margin-top: 1rem;
+}
+
+.open {
+  transform: translateY(-150%);
+  display: none;
+}
+
+.close {
+  transform: translateY(0);
+}
+
+.tags {
+  width: 100%;
+  background-color: #e4e2e2;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tag {
+  border: 1px solid black;
+  border-radius: 1rem;
+  padding: 0.2rem 0.5rem;
+  margin: 0.5rem;
+}
+
+.marketplaces {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+hr {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+h2 {
+  font-size: 1.2rem;
+  margin-top: 0;
+}
+
+@keyframes openForm {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .marketplace {
+    flex-direction: row;
+  }
+
+  .add {
+    width: 40%;
+  }
+
+  .add .mobile-view {
+    display: none;
+  }
+
+  .marketplaces {
+    width: 60%;
+    margin: 0;
+  }
+
+  .divider {
+    height: calc(100vh - 125px);
+    width: 8px;
+    background-color: #048741;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+  }
+}

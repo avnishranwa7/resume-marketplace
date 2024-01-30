@@ -2,16 +2,17 @@ import { FC, ReactElement } from "react";
 import styled from "styled-components";
 import { IconButton, Tooltip } from "@mui/material";
 
-// local imports
-import { InputProps, CSSProps } from "../types/props";
-
 // icons imports
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 
+// local imports
+import { InputProps, CSSProps } from "../types/props";
+
 interface InputType {
   id: string;
   labelText?: string;
+  minLength?: number;
   inputProps?: InputProps;
   inputCSSProps?: CSSProps;
   Icon?: ReactElement;
@@ -22,6 +23,7 @@ interface InputType {
 const Input: FC<InputType> = ({
   id,
   labelText,
+  minLength = 1,
   inputProps,
   inputCSSProps,
   Icon,
@@ -35,6 +37,8 @@ const Input: FC<InputType> = ({
         <input
           {...inputProps}
           id={id}
+          name={id}
+          minLength={minLength}
           style={{
             margin: 0,
             width: "100%",
@@ -43,6 +47,9 @@ const Input: FC<InputType> = ({
             outline: "none",
             fontSize: "inherit",
             ...{ inputCSSProps },
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") iconClick && iconClick();
           }}
         />
         {Icon && <IconButton onClick={iconClick}>{Icon}</IconButton>}
@@ -73,7 +80,7 @@ const Input: FC<InputType> = ({
   );
 };
 
-const InputDiv = styled.div`
+export const InputDiv = styled.div`
   display: flex;
   align-items: center;
   border: 1px solid #ccc;

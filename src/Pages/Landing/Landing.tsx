@@ -1,4 +1,5 @@
 import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 // styles imports
 import classes from "./Landing.module.css";
@@ -7,6 +8,8 @@ import classes from "./Landing.module.css";
 import Resume from "../../assets/resume.png";
 
 const Landing = () => {
+  const navigate = useNavigate();
+
   return (
     <div className={classes.landing}>
       <h1>The Perfect Resume is waiting for you!</h1>
@@ -81,7 +84,12 @@ const Landing = () => {
             </span>
           </li>
         </ul>
-        <Button variant="outlined">Create</Button>
+        <Button
+          variant="outlined"
+          onClick={() => navigate("/create-marketplace")}
+        >
+          Create
+        </Button>
       </div>
     </div>
   );
