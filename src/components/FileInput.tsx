@@ -2,16 +2,14 @@ import { FC, ReactElement } from "react";
 import { IconButton } from "@mui/material";
 
 // local imports
-import { InputProps, CSSProps } from "../types/props";
+import { CSSProps } from "../types/props";
 
 interface InputType {
   id: string;
   labelText?: string;
-  inputProps?: InputProps;
   inputCSSProps?: CSSProps;
   Icon?: ReactElement;
   iconClick?: () => void;
-  error?: string;
 }
 
 const FileInput: FC<InputType> = ({
