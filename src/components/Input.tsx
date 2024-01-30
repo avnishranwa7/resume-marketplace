@@ -49,7 +49,7 @@ const Input: FC<InputType> = ({
             ...{ inputCSSProps },
           }}
           onKeyDown={(e) => {
-            if (e.key === "Enter") iconClick && iconClick();
+            if (e.key === "Enter" && iconClick) iconClick();
           }}
         />
         {Icon && <IconButton onClick={iconClick}>{Icon}</IconButton>}
