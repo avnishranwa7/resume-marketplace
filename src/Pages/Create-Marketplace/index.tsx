@@ -80,7 +80,7 @@ const CreateMarketplace = () => {
   }
 
   function addNewTag() {
-    if (formState.tag.length < 3) return;
+    if (formState.tag.length < 2) return;
     setTags((prevTags) => [...prevTags, formState.tag]);
     formDispatch({ property: "tag", value: "" });
   }
