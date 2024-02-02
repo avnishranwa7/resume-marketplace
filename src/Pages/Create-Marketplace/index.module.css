@@ -1,8 +1,13 @@
 .marketplace {
   margin-top: 0;
-  padding: 1rem;
   display: flex;
   flex-direction: column;
+}
+
+.marketplace h2 {
+  font-size: 1.2rem;
+  margin: 0;
+  text-decoration: underline;
 }
 
 .add {
@@ -43,13 +48,6 @@
   flex-wrap: wrap;
 }
 
-.tag {
-  border: 1px solid black;
-  border-radius: 1rem;
-  padding: 0.2rem 0.5rem;
-  margin: 0.5rem;
-}
-
 .marketplaces {
   width: 100%;
   margin-top: 1rem;
@@ -60,14 +58,16 @@
   font-size: 1rem;
 }
 
+.marketplace-list {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  padding: 1rem;
+}
+
 hr {
   width: 100%;
   margin-top: 1rem;
-}
-
-h2 {
-  font-size: 1.2rem;
-  margin-top: 0;
 }
 
 @keyframes openForm {
@@ -79,22 +79,40 @@ h2 {
   }
 }
 
+@media screen and (min-width: 600px) {
+  .marketplace-list {
+    flex-direction: row;
+  }
+}
+
 @media screen and (min-width: 768px) {
   .marketplace {
     flex-direction: row;
   }
 
+  .marketplace h2 {
+    font-size: 1.5rem;
+  }
+
   .add {
     width: 40%;
+    position: fixed;
+    height: calc(100vh - 110px);
+    border-right: 8px solid #048741;
   }
 
   .add .mobile-view {
     display: none;
   }
 
+  .laptop-view {
+    font-size: 1.1rem;
+  }
+
   .marketplaces {
     width: 60%;
     margin: 0;
+    margin-left: 40%;
   }
 
   .marketplaces p {
@@ -102,13 +120,17 @@ h2 {
     font-size: 1.3rem;
   }
 
-  .divider {
-    height: calc(100vh - 125px);
-    width: 8px;
-    background-color: #048741;
-  }
-
   h2 {
     font-size: 1.8rem;
+  }
+}
+
+@media screen and (min-width: 1300px) {
+  .add {
+    width: 35%;
+  }
+
+  .marketplaces {
+    margin-left: 35%;
   }
 }
