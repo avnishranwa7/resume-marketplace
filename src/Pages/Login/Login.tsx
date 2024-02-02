@@ -160,7 +160,11 @@ const Login = () => {
     if (response.status === 200 || response.status === 201) {
       localStorage.setItem(
         "auth",
-        JSON.stringify({ userId: data.userId, email: data.email })
+        JSON.stringify({
+          userId: data.userId,
+          email: data.email,
+          token: data.token,
+        })
       );
 
       if (response.status === 200)

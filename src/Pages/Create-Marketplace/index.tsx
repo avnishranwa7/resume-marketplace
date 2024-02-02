@@ -1,5 +1,5 @@
 import { useState, useEffect, useReducer, useRef } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Alert, Box, Button } from "@mui/material";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -16,6 +16,7 @@ import classes from "./index.module.css";
 
 // local imports
 import { RootState } from "../../redux";
+import { logout } from "../../redux/auth";
 import Input from "../../components/Input";
 import { CATEGORIES } from "../../Constants/MarketplaceCategories";
 import Select from "../../components/Select";
@@ -54,6 +55,7 @@ const CreateMarketplace = () => {
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
+  const authDispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
   const isLoggedIn = useSelector((state: RootState) => state.auth.logged_in);
   const navigate = useNavigate();
@@ -72,6 +74,7 @@ const CreateMarketplace = () => {
     setFormError("");
     const formData = new FormData();
     formData.append("userId", user.userId);
+    formData.append("token", user.token);
     formData.append("name", formState.name);
     formData.append("category", formState.category);
     if (tags.length > 0) formData.append("tags", JSON.stringify(tags));
@@ -87,22 +90,42 @@ const CreateMarketplace = () => {
       setTags([]);
       fileInputRef.current.value = "";
       client.invalidateQueries({ queryKey: ["marketplaces"] });
-    } else toast.error(data.message);
+    } else {
+      toast.error(data.message);
+      if (data.message === "Token Expired") {
+        authDispatch(logout());
+      }
+    }
   }
 
   function addNewTag() {
     if (formState.tag.length < 2) return;
-    setTags((prevTags) => [...prevTags, formState.tag]);
+    setTags((prevTags) => {
+      if (prevTags.includes(formState.tag)) return prevTags;
+      return [...prevTags, formState.tag];
+    });
     formDispatch({ property: "tag", value: "" });
+  }
+
+  function deleteTag(tag: string) {
+    setTags((prevTags) => prevTags.filter((t) => t !== tag));
   }
 
   async function getMarketplaces(): Promise<Array<MarketplaceItemType>> {
     const response = await MarketplaceService.getMarketplaces({
-      userId: JSON.parse(localStorage.getItem("auth")!).userId,
-      token: JSON.parse(localStorage.getItem("auth")!).token,
+      userId: user.userId,
+      token: user.token,
     });
 
     const data = await response.json();
+
+    if (response.status !== 200) {
+      toast.error(data.message);
+      if (data.message === "Token Expired") {
+        authDispatch(logout());
+      }
+    }
+
     return data.marketplaces;
   }
 
@@ -203,7 +226,7 @@ const CreateMarketplace = () => {
           />
           <div className={classes.tags}>
             {tags.map((tag) => (
-              <Tag key={tag} tag={tag} />
+              <Tag key={tag} tag={tag} deletable deleteTag={deleteTag} />
             ))}
           </div>
           <FileInput

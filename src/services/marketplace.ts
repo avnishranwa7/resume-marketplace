@@ -8,10 +8,13 @@ export class MarketplaceService {
     userId: string;
     token: string;
   }) => {
-    return fetch(this.baseUrl + `/marketplaces?userId=${data.userId}`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    });
+    return fetch(
+      this.baseUrl + `/marketplaces?userId=${data.userId}&token=${data.token}`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }
+    );
   };
 
   static readonly createMarketplace = (formData: any) => {

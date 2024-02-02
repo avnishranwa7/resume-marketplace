@@ -26,6 +26,7 @@ function persistUser() {
       login({
         userId: JSON.parse(localStorage.getItem("auth")!).userId,
         email: JSON.parse(localStorage.getItem("auth")!).email,
+        token: JSON.parse(localStorage.getItem("auth")!).token,
       })
     );
   }
