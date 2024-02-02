@@ -12,7 +12,7 @@ interface AuthState {
 
 const initialState: AuthState = {
   logged_in: false,
-  user: { email: "", userId: "" },
+  user: { email: "", userId: "", token: "" },
 };
 
 export const authSlice = createSlice({
@@ -25,7 +25,8 @@ export const authSlice = createSlice({
     },
     logout: (state) => {
       state.logged_in = false;
-      state.user = { email: "", userId: "" };
+      state.user = { email: "", userId: "", token: "" };
+      localStorage.removeItem("auth");
     },
   },
 });
