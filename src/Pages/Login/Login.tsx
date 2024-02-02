@@ -1,7 +1,7 @@
 import { FormEvent, useState, useReducer, useEffect } from "react";
 import { Button } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Alert from "@mui/material/Alert";
 
 // icons imports
@@ -13,7 +13,6 @@ import classes from "./Login.module.css";
 
 // local imports
 import Input from "../../components/Input";
-import { login as loginStore } from "../../redux/auth";
 import { AuthService } from "../../services/auth";
 import { RootState } from "../../redux";
 
@@ -93,8 +92,6 @@ function showPasswordReducer(
 
 const Login = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
   const loggedIn = useSelector((state: RootState) => state.auth.logged_in);
 
   useEffect(() => {
@@ -161,7 +158,6 @@ const Login = () => {
     }
 
     if (response.status === 200 || response.status === 201) {
-      dispatch(loginStore({ userId: data.userId, email: data.email }));
       localStorage.setItem(
         "auth",
         JSON.stringify({ userId: data.userId, email: data.email })
@@ -171,6 +167,7 @@ const Login = () => {
         navigate(
           `${prevPath === "/create-marketplace" ? "/create-marketplace" : "/"}`
         );
+
       if (response.status === 201) navigate(`/verify?email=${data.email}`);
     }
   }

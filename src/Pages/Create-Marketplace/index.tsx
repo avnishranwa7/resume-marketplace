@@ -1,7 +1,10 @@
-import { useState, useEffect, useReducer } from "react";
+import { useState, useEffect, useReducer, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@mui/material";
+import { Alert, Box, Button } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import LinearProgress from "@mui/material/LinearProgress";
+import { toast } from "react-toastify";
 
 // icons imports
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
@@ -17,16 +20,17 @@ import Input from "../../components/Input";
 import { CATEGORIES } from "../../Constants/MarketplaceCategories";
 import Select from "../../components/Select";
 import FileInput from "../../components/FileInput";
+import { MarketplaceService } from "../../services/marketplace";
 
 interface FormType {
-  name: string | undefined;
+  name: string;
   category: string;
   tag: string;
 }
 
 const initialFormState: FormType = {
   name: "",
-  category: "Please select a category",
+  category: "IT",
   tag: "",
 };
 
@@ -42,10 +46,38 @@ function formReducer(state: FormType, action: ActionType) {
 const CreateMarketplace = () => {
   const [open, setOpen] = useState(true);
   const [tags, setTags] = useState<Array<string>>([]);
+  const [formError, setFormError] = useState<string>("");
   const [formState, formDispatch] = useReducer(formReducer, initialFormState);
 
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const user = useSelector((state: RootState) => state.auth.user);
   const isLoggedIn = useSelector((state: RootState) => state.auth.logged_in);
   const navigate = useNavigate();
+
+  async function submitForm() {
+    if (formState.name === "") {
+      setFormError("Please enter your Marketplace name");
+      return;
+    }
+    if (!fileInputRef.current?.files || !fileInputRef.current?.files[0]) {
+      setFormError("Please upload your resume");
+      return;
+    }
+
+    setFormError("");
+    const formData = new FormData();
+    formData.append("userId", user.userId);
+    formData.append("name", formState.name);
+    formData.append("category", formState.category);
+    if (tags.length > 0) formData.append("tags", JSON.stringify(tags));
+    formData.append("upload_file", fileInputRef.current?.files[0]);
+
+    const response = await MarketplaceService.createMarketplace(formData);
+    const data = await response.json();
+    if (response.status === 201) toast.success("Marketplace created");
+    else toast.error(data.message);
+  }
 
   function addNewTag() {
     if (formState.tag.length < 3) return;
@@ -53,9 +85,19 @@ const CreateMarketplace = () => {
     formDispatch({ property: "tag", value: "" });
   }
 
-  function submitForm() {
-    console.log("submit form");
-  }
+  const { data: marketplaces, isFetching: isFetchingMarketplaces } = useQuery({
+    queryKey: ["marketplaces"],
+    queryFn: async () => {
+      const response = await MarketplaceService.getMarketplaces({
+        email: JSON.parse(localStorage.getItem("auth")!).email,
+        token: JSON.parse(localStorage.getItem("auth")!).token,
+      });
+
+      const data = await response.json();
+      return data.marketplaces;
+    },
+    refetchOnWindowFocus: false,
+  });
 
   useEffect(() => {
     if (!isLoggedIn) navigate("/login");
@@ -86,6 +128,11 @@ const CreateMarketplace = () => {
         >
           Create a new Marketplace
         </Button>
+        {open && formError && (
+          <Alert severity="error" sx={{ margin: "1rem", fontSize: "inherit" }}>
+            {formError}
+          </Alert>
+        )}
         <div
           id="laptop-view"
           className={
@@ -138,7 +185,11 @@ const CreateMarketplace = () => {
               </span>
             ))}
           </div>
-          <FileInput id="resume-input" labelText="Choose Resume" />
+          <FileInput
+            ref={fileInputRef}
+            id="resume-input"
+            labelText="Choose Resume"
+          />
           <Button
             className={classes["submit-button"]}
             variant="outlined"
@@ -151,7 +202,14 @@ const CreateMarketplace = () => {
       <div className={classes.divider}></div>
       <div className={classes.marketplaces}>
         <h2>Your Marketplaces</h2>
-        <div></div>
+        {isFetchingMarketplaces && (
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <LinearProgress sx={{ width: "80%" }} />
+          </Box>
+        )}
+        {marketplaces && marketplaces.length === 0 && (
+          <p>No marketplaces found</p>
+        )}
       </div>
     </div>
   );

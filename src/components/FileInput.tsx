@@ -1,4 +1,4 @@
-import { FC, ReactElement } from "react";
+import { ReactElement, forwardRef } from "react";
 import { IconButton } from "@mui/material";
 
 // local imports
@@ -12,17 +12,13 @@ interface InputType {
   iconClick?: () => void;
 }
 
-const FileInput: FC<InputType> = ({
-  id,
-  labelText,
-  inputCSSProps,
-  Icon,
-  iconClick,
-}) => {
+const FileInput = forwardRef<HTMLInputElement, InputType>((props, ref) => {
+  const { id, labelText, inputCSSProps, Icon, iconClick } = props;
   return (
     <>
       {labelText && <label htmlFor={id}>{labelText}</label>}
       <input
+        ref={ref}
         type="file"
         style={{
           display: Icon ? "hidden" : "block",
@@ -38,6 +34,6 @@ const FileInput: FC<InputType> = ({
       {Icon && <IconButton onClick={iconClick}>{Icon}</IconButton>}
     </>
   );
-};
+});
 
 export default FileInput;
