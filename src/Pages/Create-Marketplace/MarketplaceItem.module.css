@@ -20,6 +20,12 @@
   flex-wrap: wrap;
 }
 
+.tags p {
+  text-align: left;
+  font-size: 1rem;
+  font-style: italic;
+}
+
 .tags span {
   margin-left: 0;
 }
@@ -28,11 +34,16 @@
   .marketplace-item {
     width: fit-content;
     max-width: 430px;
+    min-width: 120px;
   }
 }
 
 @media screen and (min-width: 768px) {
   .marketplace-item {
     min-width: 250px;
+  }
+
+  .tags p {
+    font-size: 1.1rem;
   }
 }

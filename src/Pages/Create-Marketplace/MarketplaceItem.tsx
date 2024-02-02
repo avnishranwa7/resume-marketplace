@@ -21,6 +21,7 @@ const MarketplaceItem: FC<Props> = ({ place }) => {
       <h3>{place.name}</h3>
       <h4>Category: {place.category}</h4>
       <div className={classes.tags}>
+        {place.tags.length === 0 && <p>No tags</p>}
         {place.tags.map((tag) => (
           <Tag key={place.id + tag} tag={tag} />
         ))}

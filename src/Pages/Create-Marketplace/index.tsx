@@ -83,7 +83,9 @@ const CreateMarketplace = () => {
       toast.success("Marketplace created");
       formDispatch({ property: "name", value: "" });
       formDispatch({ property: "category", value: "IT" });
+      formDispatch({ property: "tag", value: "" });
       setTags([]);
+      fileInputRef.current.value = "";
       client.invalidateQueries({ queryKey: ["marketplaces"] });
     } else toast.error(data.message);
   }
