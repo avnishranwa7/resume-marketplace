@@ -12,10 +12,13 @@
 
 .add {
   width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .add .mobile-view {
-  width: 100%;
+  width: 90%;
+  align-self: center;
 }
 
 .add .laptop-view {
