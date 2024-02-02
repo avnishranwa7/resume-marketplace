@@ -2,7 +2,7 @@ import { useState, useEffect, useReducer, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Alert, Box, Button } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import LinearProgress from "@mui/material/LinearProgress";
 import { toast } from "react-toastify";
 
@@ -21,6 +21,9 @@ import { CATEGORIES } from "../../Constants/MarketplaceCategories";
 import Select from "../../components/Select";
 import FileInput from "../../components/FileInput";
 import { MarketplaceService } from "../../services/marketplace";
+import MarketplaceItem from "./MarketplaceItem";
+import { MarketplaceItemType } from "./types";
+import Tag from "./Tag";
 
 interface FormType {
   name: string;
@@ -54,6 +57,7 @@ const CreateMarketplace = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   const isLoggedIn = useSelector((state: RootState) => state.auth.logged_in);
   const navigate = useNavigate();
+  const client = useQueryClient();
 
   async function submitForm() {
     if (formState.name === "") {
@@ -75,8 +79,13 @@ const CreateMarketplace = () => {
 
     const response = await MarketplaceService.createMarketplace(formData);
     const data = await response.json();
-    if (response.status === 201) toast.success("Marketplace created");
-    else toast.error(data.message);
+    if (response.status === 201) {
+      toast.success("Marketplace created");
+      formDispatch({ property: "name", value: "" });
+      formDispatch({ property: "category", value: "IT" });
+      setTags([]);
+      client.invalidateQueries({ queryKey: ["marketplaces"] });
+    } else toast.error(data.message);
   }
 
   function addNewTag() {
@@ -85,17 +94,29 @@ const CreateMarketplace = () => {
     formDispatch({ property: "tag", value: "" });
   }
 
+  async function getMarketplaces(): Promise<Array<MarketplaceItemType>> {
+    const response = await MarketplaceService.getMarketplaces({
+      userId: JSON.parse(localStorage.getItem("auth")!).userId,
+      token: JSON.parse(localStorage.getItem("auth")!).token,
+    });
+
+    const data = await response.json();
+    return data.marketplaces;
+  }
+
+  function toMarketplaceItem(place: any): MarketplaceItemType {
+    return {
+      id: place._id,
+      name: place.name,
+      tags: place.tags,
+      category: place.category,
+    };
+  }
+
   const { data: marketplaces, isFetching: isFetchingMarketplaces } = useQuery({
     queryKey: ["marketplaces"],
-    queryFn: async () => {
-      const response = await MarketplaceService.getMarketplaces({
-        email: JSON.parse(localStorage.getItem("auth")!).email,
-        token: JSON.parse(localStorage.getItem("auth")!).token,
-      });
-
-      const data = await response.json();
-      return data.marketplaces;
-    },
+    queryFn: getMarketplaces,
+    select: (data) => data.map(toMarketplaceItem),
     refetchOnWindowFocus: false,
   });
 
@@ -180,9 +201,7 @@ const CreateMarketplace = () => {
           />
           <div className={classes.tags}>
             {tags.map((tag) => (
-              <span key={tag} className={classes.tag}>
-                {tag}
-              </span>
+              <Tag key={tag} tag={tag} />
             ))}
           </div>
           <FileInput
@@ -199,7 +218,6 @@ const CreateMarketplace = () => {
           </Button>
         </div>
       </div>
-      <div className={classes.divider}></div>
       <div className={classes.marketplaces}>
         <h2>Your Marketplaces</h2>
         {isFetchingMarketplaces && (
@@ -210,6 +228,13 @@ const CreateMarketplace = () => {
         {marketplaces && marketplaces.length === 0 && (
           <p>No marketplaces found</p>
         )}
+        <div className={classes["marketplace-list"]}>
+          {marketplaces &&
+            marketplaces.length > 0 &&
+            marketplaces.map((place) => (
+              <MarketplaceItem key={place.id} place={place} />
+            ))}
+        </div>
       </div>
     </div>
   );
