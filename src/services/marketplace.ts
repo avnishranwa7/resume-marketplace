@@ -23,4 +23,11 @@ export class MarketplaceService {
       body: formData,
     });
   };
+
+  static readonly getResume = (data: { filename: string }) => {
+    return fetch(this.baseUrl + `/get-resume?filename=${data.filename}`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+  };
 }

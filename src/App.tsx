@@ -17,6 +17,7 @@ import CompleteVerification from "./Pages/Login/CompleteVerification";
 import { login } from "./redux/auth";
 
 import "react-toastify/dist/ReactToastify.css";
+import ProtectedRoute from "./ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -60,7 +61,11 @@ const router = createBrowserRouter([
       },
       {
         path: "create-marketplace",
-        element: <CreateMarketplace />,
+        element: (
+          <ProtectedRoute>
+            <CreateMarketplace />
+          </ProtectedRoute>
+        ),
         loader: loaderFn,
       },
       {

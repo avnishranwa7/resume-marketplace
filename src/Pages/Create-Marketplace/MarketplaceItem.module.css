@@ -1,11 +1,20 @@
 .marketplace-item {
   position: relative;
   padding: 1rem;
-  margin: 1rem;
+  margin: 0.3rem;
   margin-bottom: 1rem;
   border: 1px solid black;
   border-radius: 8px;
   box-shadow: 0.1px 0.1px 10px #a8a8a8;
+  height: fit-content;
+}
+
+.marketplace-item h3 {
+  font-size: 1.4rem;
+}
+
+.marketplace-item h4 {
+  font-size: 1.1rem;
 }
 
 .marketplace-item h3,
@@ -32,15 +41,13 @@
 
 @media screen and (min-width: 600px) {
   .marketplace-item {
-    width: fit-content;
-    max-width: 430px;
-    min-width: 120px;
+    max-width: 250px;
   }
 }
 
 @media screen and (min-width: 768px) {
   .marketplace-item {
-    min-width: 250px;
+    max-width: 350px;
   }
 
   .tags p {
