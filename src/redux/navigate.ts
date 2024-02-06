@@ -4,14 +4,17 @@ import type { RootState } from "./index";
 
 interface NavigateState {
   path: string;
+  was_logged_in: boolean;
 }
 
 interface PayloadActionType {
-  path: string;
+  path?: string;
+  was_logged_in?: boolean;
 }
 
 const initialState: NavigateState = {
   path: "",
+  was_logged_in: false,
 };
 
 export const navigateSlice = createSlice({
@@ -19,7 +22,8 @@ export const navigateSlice = createSlice({
   initialState,
   reducers: {
     update: (state, action: PayloadAction<PayloadActionType>) => {
-      state.path = action.payload.path;
+      state.path = action.payload.path ?? state.path;
+      state.was_logged_in = action.payload.was_logged_in ?? state.was_logged_in;
     },
   },
 });

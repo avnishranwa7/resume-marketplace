@@ -110,7 +110,7 @@ const Login = () => {
   );
   const [generalError, setGeneralError] = useState("");
 
-  const prevPath = useSelector((state: RootState) => state.navigate.path);
+  const navigateState = useSelector((state: RootState) => state.navigate);
   const params = useLocation().search;
   let urlError = "";
   let urlSuccess = "";
@@ -169,7 +169,11 @@ const Login = () => {
 
       if (response.status === 200)
         navigate(
-          `${prevPath === "/create-marketplace" ? "/create-marketplace" : "/"}`
+          `${
+            navigateState.path === "/create-marketplace"
+              ? "/create-marketplace"
+              : "/"
+          }`
         );
 
       if (response.status === 201) navigate(`/verify?email=${data.email}`);
@@ -193,14 +197,15 @@ const Login = () => {
             {generalError}
           </Alert>
         )}
-        {prevPath === "/create-marketplace" && (
-          <Alert
-            severity="warning"
-            sx={{ marginBottom: "1rem", fontSize: "inherit" }}
-          >
-            You must be logged in to create a marketplace
-          </Alert>
-        )}
+        {navigateState.path === "/create-marketplace" &&
+          !navigateState.was_logged_in && (
+            <Alert
+              severity="warning"
+              sx={{ marginBottom: "1rem", fontSize: "inherit" }}
+            >
+              You must be logged in to create a marketplace
+            </Alert>
+          )}
         {urlError !== "" && (
           <Alert
             severity="warning"
