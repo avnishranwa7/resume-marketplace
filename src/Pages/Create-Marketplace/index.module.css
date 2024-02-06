@@ -64,8 +64,10 @@
 .marketplace-list {
   display: flex;
   flex-direction: column;
+  align-items: center;
   flex-wrap: wrap;
   padding: 1rem;
+  max-width: 100%;
 }
 
 hr {

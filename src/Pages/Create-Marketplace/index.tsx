@@ -71,6 +71,10 @@ const CreateMarketplace = () => {
       return;
     }
 
+    if (fileInputRef.current?.files[0].type !== "application/pdf") {
+      setFormError("Only PDFs are allowed");
+      return;
+    }
     setFormError("");
     const formData = new FormData();
     formData.append("userId", user.userId);
@@ -135,6 +139,7 @@ const CreateMarketplace = () => {
       name: place.name,
       tags: place.tags,
       category: place.category,
+      resumes: place.resumes,
     };
   }
 
@@ -222,7 +227,7 @@ const CreateMarketplace = () => {
             }}
             Icon={<AddCircleOutlineIcon />}
             iconClick={addNewTag}
-            labelText="Tag length must be atleast 3 characters long"
+            labelText="Tag length must be atleast 2 characters long"
           />
           <div className={classes.tags}>
             {tags.map((tag) => (
@@ -232,7 +237,7 @@ const CreateMarketplace = () => {
           <FileInput
             ref={fileInputRef}
             id="resume-input"
-            labelText="Choose Resume"
+            labelText="Choose Resume (only PDFs)"
           />
           <Button
             className={classes["submit-button"]}

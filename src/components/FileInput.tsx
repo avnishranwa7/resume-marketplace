@@ -19,6 +19,7 @@ const FileInput = forwardRef<HTMLInputElement, InputType>((props, ref) => {
       {labelText && <label htmlFor={id}>{labelText}</label>}
       <input
         ref={ref}
+        accept="application/pdf"
         type="file"
         style={{
           display: Icon ? "hidden" : "block",
