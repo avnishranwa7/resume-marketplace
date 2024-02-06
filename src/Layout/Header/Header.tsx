@@ -19,6 +19,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import classes from "./Header.module.css";
 import { RootState } from "../../redux";
 import { logout } from "../../redux/auth";
+import { update } from "../../redux/navigate";
 
 function stringToColor(string: string) {
   let hash = 0;
@@ -169,7 +170,7 @@ const Header = () => {
           <MenuItem
             onClick={() => {
               dispatch(logout());
-              localStorage.removeItem("auth");
+              dispatch(update({ was_logged_in: true }));
               handleClose();
             }}
           >

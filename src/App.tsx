@@ -34,7 +34,11 @@ function persistUser() {
 }
 
 function loaderFn() {
-  store.dispatch(update({ path: window.location.pathname }));
+  store.dispatch(
+    update({
+      path: window.location.pathname,
+    })
+  );
   persistUser();
   return 0;
 }
