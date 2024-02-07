@@ -1,10 +1,10 @@
 export class AuthService {
-  static baseUrl =
+  static readonly baseUrl =
     process.env.NODE_ENV === "development"
       ? "http://localhost:3001"
       : "https://backend.resume-marketplace.com";
 
-  static login = (data: any) => {
+  static readonly login = (data: any) => {
     return fetch(this.baseUrl + "/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -12,7 +12,7 @@ export class AuthService {
     });
   };
 
-  static signup = (data: any) => {
+  static readonly signup = (data: any) => {
     return fetch(this.baseUrl + "/auth/signup", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -20,7 +20,7 @@ export class AuthService {
     });
   };
 
-  static verify = (email: string) => {
+  static readonly verify = (email: string) => {
     return fetch(this.baseUrl + "/auth/verify", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -28,7 +28,7 @@ export class AuthService {
     });
   };
 
-  static completeVerification = (email: string, token: string) => {
+  static readonly completeVerification = (email: string, token: string) => {
     return fetch(this.baseUrl + "/auth/complete-verification", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
