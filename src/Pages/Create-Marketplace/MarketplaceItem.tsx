@@ -14,10 +14,7 @@ import { MarketplaceService } from "../../services/marketplace";
 import { MarketplaceItemType } from "./types";
 import Tag from "./Tag";
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.js",
-  import.meta.url
-).toString();
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
 interface Props {
   place: MarketplaceItemType;
