@@ -3,6 +3,7 @@ import { Button } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Alert from "@mui/material/Alert";
+import { LoadingButton } from "@mui/lab";
 
 // icons imports
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -91,6 +92,8 @@ function showPasswordReducer(
 }
 
 const Login = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+
   const navigate = useNavigate();
   const loggedIn = useSelector((state: RootState) => state.auth.logged_in);
 
@@ -142,11 +145,14 @@ const Login = () => {
   async function submitForm(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
+    setLoading(true);
     setGeneralError("");
     formErrorsDispatch({ property: "call", value: "" });
     const response = loginSelected ? await login() : await signup();
 
     const data = await response.json();
+
+    setLoading(false);
     if (response.status === 422) {
       for (let input of data.data) {
         formErrorsDispatch({ property: input.path, value: input.msg });
@@ -312,9 +318,14 @@ const Login = () => {
             iconClick={() => showPasswordDispatch("confirmPassword")}
           />
         )}
-        <Button variant="outlined" type="submit" sx={{ fontSize: "inherit" }}>
+        <LoadingButton
+          loading={loading}
+          variant="outlined"
+          type="submit"
+          sx={{ fontSize: "inherit" }}
+        >
           {loginSelected ? "Login" : "Sign Up"}
-        </Button>
+        </LoadingButton>
       </form>
     </div>
   );
