@@ -157,7 +157,7 @@ const Login = () => {
       setGeneralError(data.message);
     }
 
-    if (response.status === 200 || response.status === 201) {
+    if (response.status === 200) {
       localStorage.setItem(
         "auth",
         JSON.stringify({
@@ -166,18 +166,16 @@ const Login = () => {
           token: data.token,
         })
       );
-
-      if (response.status === 200)
-        navigate(
-          `${
-            navigateState.path === "/create-marketplace"
-              ? "/create-marketplace"
-              : "/"
-          }`
-        );
-
-      if (response.status === 201) navigate(`/verify?email=${data.email}`);
+      navigate(
+        `${
+          navigateState.path === "/create-marketplace"
+            ? "/create-marketplace"
+            : "/"
+        }`
+      );
     }
+
+    if (response.status === 201) navigate(`/verify?email=${data.email}`);
   }
 
   function changeView() {
