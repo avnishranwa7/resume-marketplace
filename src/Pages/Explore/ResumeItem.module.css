@@ -1,0 +1,56 @@
+.resume-item {
+  position: relative;
+  padding: 1rem;
+  margin: 0.3rem;
+  margin-bottom: 1rem;
+  border: 1px solid black;
+  border-radius: 8px;
+  box-shadow: 0.1px 0.1px 10px #a8a8a8;
+  height: fit-content;
+}
+
+.resume-item h3 {
+  font-size: 1.4rem;
+}
+
+.resume-item h4 {
+  font-size: 1.1rem;
+}
+
+.resume-item h3,
+.resume-item h4 {
+  font-weight: 500;
+  margin: 0;
+}
+
+.tags {
+  display: flex;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.tags p {
+  text-align: left;
+  font-size: 1rem;
+  font-style: italic;
+}
+
+.tags span {
+  margin-left: 0;
+}
+
+@media screen and (min-width: 600px) {
+  .resume-item {
+    max-width: 250px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .resume-item {
+    max-width: 350px;
+  }
+
+  .tags p {
+    font-size: 1.1rem;
+  }
+}
