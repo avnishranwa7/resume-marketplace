@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify";
 
 // styles imports
 import classes from "./App.module.css";
+import "react-toastify/dist/ReactToastify.css";
 
 // local imports
 import RootLayout from "./Layout/RootLayout";
@@ -15,9 +16,8 @@ import { store } from "./redux/index";
 import { update } from "./redux/navigate";
 import CompleteVerification from "./Pages/Login/CompleteVerification";
 import { login } from "./redux/auth";
-
-import "react-toastify/dist/ReactToastify.css";
 import ProtectedRoute from "./ProtectedRoute";
+import Explore from "./Pages/Explore";
 
 const queryClient = new QueryClient();
 
@@ -64,6 +64,11 @@ const router = createBrowserRouter([
         loader: loaderFn,
       },
       {
+        path: "complete-verification",
+        element: <CompleteVerification />,
+        loader: loaderFn,
+      },
+      {
         path: "create-marketplace",
         element: (
           <ProtectedRoute>
@@ -73,9 +78,8 @@ const router = createBrowserRouter([
         loader: loaderFn,
       },
       {
-        path: "complete-verification",
-        element: <CompleteVerification />,
-        loader: loaderFn,
+        path: "/explore",
+        element: <Explore />,
       },
     ],
   },

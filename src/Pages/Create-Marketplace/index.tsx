@@ -5,6 +5,7 @@ import { Alert, Box, Button } from "@mui/material";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import LinearProgress from "@mui/material/LinearProgress";
 import { toast } from "react-toastify";
+import { LoadingButton } from "@mui/lab";
 
 // icons imports
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
@@ -48,6 +49,7 @@ function formReducer(state: FormType, action: ActionType) {
 }
 
 const CreateMarketplace = () => {
+  const [submitLoading, setSubmitLoading] = useState<boolean>(false);
   const [open, setOpen] = useState(true);
   const [tags, setTags] = useState<Array<string>>([]);
   const [formError, setFormError] = useState<string>("");
@@ -75,7 +77,10 @@ const CreateMarketplace = () => {
       setFormError("Only PDFs are allowed");
       return;
     }
+
+    setSubmitLoading(true);
     setFormError("");
+
     const formData = new FormData();
     formData.append("userId", user.userId);
     formData.append("token", user.token);
@@ -86,6 +91,8 @@ const CreateMarketplace = () => {
 
     const response = await MarketplaceService.createMarketplace(formData);
     const data = await response.json();
+
+    setSubmitLoading(false);
     if (response.status === 201) {
       toast.success("Marketplace created");
       formDispatch({ property: "name", value: "" });
@@ -157,7 +164,8 @@ const CreateMarketplace = () => {
   return (
     <div className={classes.marketplace}>
       <div className={classes.add}>
-        <Button
+        <LoadingButton
+          loading={submitLoading}
           variant="outlined"
           endIcon={open ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
           className={classes["mobile-view"]}
@@ -178,7 +186,7 @@ const CreateMarketplace = () => {
           }
         >
           Create a new Marketplace
-        </Button>
+        </LoadingButton>
         {open && formError && (
           <Alert severity="error" sx={{ margin: "1rem", fontSize: "inherit" }}>
             {formError}

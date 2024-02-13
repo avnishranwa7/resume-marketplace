@@ -24,6 +24,22 @@ export class MarketplaceService {
     });
   };
 
+  static readonly getResumes = (data: {
+    tags: Array<string>;
+    page: number;
+    offset?: number;
+  }) => {
+    return fetch(this.baseUrl + `/get-resumes`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        tags: data.tags,
+        page: data.page,
+        ...(data.offset && { offset: data.offset }),
+      }),
+    });
+  };
+
   static readonly getResume = (data: { filename: string }) => {
     return fetch(this.baseUrl + `/get-resume?filename=${data.filename}`, {
       method: "GET",
