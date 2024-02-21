@@ -46,7 +46,7 @@ const Input: FC<InputType> = ({
             padding: "0.5rem",
             outline: "none",
             fontSize: "inherit",
-            ...{ inputCSSProps },
+            ...inputCSSProps,
           }}
           onKeyDown={(e) => {
             if (e.key === "Enter" && iconClick) iconClick();

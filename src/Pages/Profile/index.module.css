@@ -1,0 +1,37 @@
+.profile-page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile .location {
+  display: flex;
+}
+
+.profile .location-editing {
+  display: block;
+}
+
+.profile label {
+  align-self: flex-start;
+}
+
+.profile img {
+  width: 50%;
+  max-width: 400px;
+  margin-bottom: 0.5rem;
+}
+
+.profile h1 {
+  margin: 0;
+}
+
+.profile h2 {
+  margin: 0;
+}

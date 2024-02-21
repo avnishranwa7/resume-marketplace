@@ -14,4 +14,5 @@ export interface CSSProps {
   margin?: string;
   padding?: string;
   width?: string;
+  fontSize?: string;
 }

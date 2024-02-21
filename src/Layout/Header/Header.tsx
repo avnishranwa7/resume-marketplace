@@ -1,15 +1,20 @@
 import { FC, useState } from "react";
-import { IconButton } from "@mui/material";
+import {
+  IconButton,
+  Avatar,
+  Menu,
+  MenuProps,
+  MenuItem,
+  ListItemIcon,
+  Divider,
+  styled,
+  alpha,
+} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import Avatar from "@mui/material/Avatar";
-import Menu, { MenuProps } from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import Divider from "@mui/material/Divider";
 import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
-import { styled, alpha } from "@mui/material/styles";
+import { useNavigate } from "react-router-dom";
 
 // icons imports
 import MenuIcon from "@mui/icons-material/Menu";
@@ -102,6 +107,7 @@ const Header = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const open = Boolean(anchorEl);
   const username = useSelector((state: RootState) => state.auth.user.email);
@@ -148,7 +154,13 @@ const Header = () => {
           onClose={handleClose}
           onClick={handleClose}
         >
-          <MenuItem onClick={handleClose} sx={{ p: "0.7rem", pl: "1rem" }}>
+          <MenuItem
+            onClick={() => {
+              handleClose();
+              navigate("/profile");
+            }}
+            sx={{ p: "0.7rem", pl: "1rem" }}
+          >
             Profile
           </MenuItem>
           <MenuItem onClick={handleClose} sx={{ p: "0.7rem", pl: "1rem" }}>
