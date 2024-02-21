@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 // styles imports
-import classes from "./Landing.module.css";
+import classes from "./index.module.css";
 
 // local imports
 import Resume from "../../assets/resume.png";

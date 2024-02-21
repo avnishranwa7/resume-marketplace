@@ -8,16 +8,13 @@ import "react-toastify/dist/ReactToastify.css";
 
 // local imports
 import RootLayout from "./Layout/RootLayout";
-import Landing from "./Pages/Landing/Landing";
-import Login from "./Pages/Login/Login";
+import { CreateMarketplace, Landing, Login, Explore, Profile } from "./Pages";
 import Verification from "./Pages/Login/Verification";
-import CreateMarketplace from "./Pages/Create-Marketplace";
 import { store } from "./redux/index";
 import { update } from "./redux/navigate";
 import CompleteVerification from "./Pages/Login/CompleteVerification";
 import { login } from "./redux/auth";
 import ProtectedRoute from "./ProtectedRoute";
-import Explore from "./Pages/Explore";
 
 const queryClient = new QueryClient();
 
@@ -73,6 +70,15 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <CreateMarketplace />
+          </ProtectedRoute>
+        ),
+        loader: loaderFn,
+      },
+      {
+        path: "profile",
+        element: (
+          <ProtectedRoute>
+            <Profile />
           </ProtectedRoute>
         ),
         loader: loaderFn,
