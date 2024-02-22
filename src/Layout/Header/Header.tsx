@@ -9,6 +9,7 @@ import {
   Divider,
   styled,
   alpha,
+  Button,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import PersonAdd from "@mui/icons-material/PersonAdd";
@@ -111,6 +112,7 @@ const Header = () => {
   const dispatch = useDispatch();
   const open = Boolean(anchorEl);
   const username = useSelector((state: RootState) => state.auth.user.email);
+  const isLoggedIn = useSelector((state: RootState) => state.auth.logged_in);
 
   function handleClose() {
     setAnchorEl(null);
@@ -118,7 +120,16 @@ const Header = () => {
 
   return (
     <header className={classes.header}>
-      <MobileNav open={mobileNavOpen} close={() => setMobileNavOpen(false)} />
+      <MobileNav
+        open={mobileNavOpen}
+        isLoggedIn={isLoggedIn}
+        close={() => setMobileNavOpen(false)}
+        logout={() => {
+          dispatch(logout());
+          dispatch(update({ was_logged_in: true }));
+          navigate("/explore");
+        }}
+      />
       <span className={classes["mobile-menu"]}>
         <IconButton
           sx={{ m: 0, p: 0 }}
@@ -140,7 +151,7 @@ const Header = () => {
         <li className={classes.create}>
           <a href="/create-marketplace">Create Marketplace</a>
         </li>
-        {username !== "" && (
+        {isLoggedIn && (
           <li>
             <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
               <Avatar {...stringAvatar(username)} />
@@ -199,15 +210,17 @@ const Header = () => {
 
 interface MobileNavProps {
   open: boolean;
+  isLoggedIn: boolean;
   close: () => void;
+  logout: () => void;
 }
 
-const MobileNav: FC<MobileNavProps> = ({ open, close }) => {
+const MobileNav: FC<MobileNavProps> = ({ open, isLoggedIn, close, logout }) => {
   return (
     <div
       className={classes["mobile-nav"] + " " + classes[open ? "open" : "close"]}
     >
-      <IconButton sx={{ p: 0, m: 1 }} onClick={close}>
+      <IconButton className={classes.close} onClick={close} sx={{ p: 0, m: 1 }}>
         <CloseIcon />
       </IconButton>
       <ul className={classes.links}>
@@ -217,6 +230,25 @@ const MobileNav: FC<MobileNavProps> = ({ open, close }) => {
         <li className={classes.create}>
           <a href="/create-marketplace">Create Marketplace</a>
         </li>
+        {isLoggedIn && (
+          <li className={classes.create}>
+            <a href="/profile">Profile</a>
+          </li>
+        )}
+        {isLoggedIn && (
+          <li className={classes.create}>
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={() => {
+                close();
+                logout();
+              }}
+            >
+              Log Out
+            </Button>
+          </li>
+        )}
       </ul>
     </div>
   );
