@@ -51,7 +51,9 @@ const Landing = () => {
             </span>
           </li>
         </ul>
-        <Button variant="outlined">Explore</Button>
+        <Button variant="outlined" onClick={() => navigate("/explore")}>
+          Explore
+        </Button>
       </div>
       <hr />
       <div className={classes.create}>
