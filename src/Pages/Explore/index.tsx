@@ -1,4 +1,4 @@
-import { useState, useReducer, ChangeEvent, useEffect } from "react";
+import { useState, useReducer, ChangeEvent, useEffect, useMemo } from "react";
 import {
   Accordion,
   AccordionActions,
@@ -27,6 +27,7 @@ import { ResumeType } from "./types";
 import ResumeItem from "./ResumeItem";
 
 interface FilterType {
+  applied: boolean;
   tag: string;
   city: string;
   state: string;
@@ -35,6 +36,7 @@ interface FilterType {
 }
 
 const initialFilterState: FilterType = {
+  applied: false,
   tag: "",
   city: "",
   state: "",
@@ -44,7 +46,7 @@ const initialFilterState: FilterType = {
 
 interface ActionType {
   property: string;
-  value: string;
+  value: string | boolean;
 }
 
 function filterReducer(state: FilterType, action: ActionType) {
@@ -148,6 +150,25 @@ const Explore = () => {
     }
   }
 
+  const isFilter = useMemo(() => {
+    if (
+      tags.length > 0 ||
+      filterState.city !== "" ||
+      filterState.state !== "" ||
+      filterState.country !== "" ||
+      filterState.yeo !== ""
+    )
+      return true;
+
+    return false;
+  }, [
+    tags.length,
+    filterState.city,
+    filterState.state,
+    filterState.country,
+    filterState.yeo,
+  ]);
+
   return (
     <div className={classes.explore}>
       <div className={classes["mobile-filters"]}>
@@ -228,11 +249,35 @@ const Explore = () => {
             <Button
               variant="outlined"
               color="error"
+              onClick={() => {
+                if (!isFilter) return;
+
+                setPage(1);
+                setTags([]);
+                filterDispatch({ property: "clear", value: "" });
+
+                if (filterState.applied)
+                  setTimeout(() => {
+                    refetch();
+                  }, 0);
+              }}
               sx={{ fontSize: "0.8rem" }}
             >
               Clear Filters
             </Button>
-            <Button variant="outlined" sx={{ fontSize: "0.8rem" }}>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                if (!isFilter) return;
+
+                filterDispatch({ property: "applied", value: true });
+                setPage(1);
+                setTimeout(() => {
+                  refetch();
+                }, 0);
+              }}
+              sx={{ fontSize: "0.8rem" }}
+            >
               Apply Filters
             </Button>
           </AccordionActions>
@@ -309,12 +354,16 @@ const Explore = () => {
             variant="outlined"
             color="error"
             onClick={() => {
+              if (!isFilter) return;
+
               setPage(1);
               setTags([]);
               filterDispatch({ property: "clear", value: "" });
-              setTimeout(() => {
-                refetch();
-              }, 0);
+
+              if (filterState.applied)
+                setTimeout(() => {
+                  refetch();
+                }, 0);
             }}
             sx={{ fontSize: "0.8rem" }}
           >
@@ -323,6 +372,9 @@ const Explore = () => {
           <Button
             variant="outlined"
             onClick={() => {
+              if (!isFilter) return;
+
+              filterDispatch({ property: "applied", value: true });
               setPage(1);
               setTimeout(() => {
                 refetch();
