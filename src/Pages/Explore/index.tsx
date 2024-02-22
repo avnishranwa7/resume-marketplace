@@ -7,6 +7,7 @@ import {
   Typography,
   Button,
   Pagination,
+  Slider,
 } from "@mui/material";
 import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
@@ -27,10 +28,18 @@ import ResumeItem from "./ResumeItem";
 
 interface FilterType {
   tag: string;
+  city: string;
+  state: string;
+  country: string;
+  yeo: string;
 }
 
 const initialFilterState: FilterType = {
   tag: "",
+  city: "",
+  state: "",
+  country: "",
+  yeo: "",
 };
 
 interface ActionType {
@@ -55,7 +64,14 @@ const Explore = () => {
   );
 
   async function getResumes(): Promise<Array<ResumeType>> {
-    const response = await MarketplaceService.getResumes({ tags, page });
+    const response = await MarketplaceService.getResumes({
+      tags,
+      page,
+      city: filterState.city,
+      state: filterState.state,
+      country: filterState.country,
+      yeo: filterState.yeo,
+    });
     const data = await response.json();
     setTotalPages(data.count);
 
@@ -141,7 +157,7 @@ const Explore = () => {
           </AccordionSummary>
           <AccordionDetails>
             <Input
-              id="marketplace-tags"
+              id="marketplace-tags-mobile"
               inputProps={{
                 required: true,
                 placeholder: "Tags",
@@ -149,6 +165,7 @@ const Explore = () => {
                 onChange: (e) =>
                   filterDispatch({ property: "tag", value: e.target.value }),
               }}
+              inputDivCSSProps={{ margin: "0" }}
               Icon={<AddCircleOutlineIcon />}
               iconClick={addNewTag}
               labelText="Tag length must be atleast 2 characters long"
@@ -158,6 +175,54 @@ const Explore = () => {
                 <Tag key={tag} tag={tag} deletable deleteTag={deleteTag} />
               ))}
             </TagsDiv>
+            <Input
+              id="city-filter-mobile"
+              inputProps={{
+                required: true,
+                placeholder: "City",
+                value: filterState.city,
+                onChange: (e) =>
+                  filterDispatch({ property: "city", value: e.target.value }),
+              }}
+            />
+            <Input
+              id="state-filter-mobile"
+              inputProps={{
+                required: true,
+                placeholder: "State",
+                value: filterState.state,
+                onChange: (e) =>
+                  filterDispatch({ property: "state", value: e.target.value }),
+              }}
+            />
+            <Input
+              id="country-filter-mobile"
+              inputProps={{
+                required: true,
+                placeholder: "Country",
+                value: filterState.country,
+                onChange: (e) =>
+                  filterDispatch({
+                    property: "country",
+                    value: e.target.value,
+                  }),
+              }}
+            />
+            <label htmlFor="slider-filter-mobile">Years of Experience</label>
+            <Slider
+              id="slider-filter-mobile"
+              aria-label="Years of Experience"
+              value={filterState.yeo === "" ? 0 : +filterState.yeo}
+              onChange={(_, value) => {
+                filterDispatch({
+                  property: "yeo",
+                  value: typeof value === "object" ? `${value[0]}` : `${value}`,
+                });
+              }}
+              valueLabelDisplay="auto"
+              min={0}
+              max={10}
+            />
           </AccordionDetails>
           <AccordionActions>
             <Button
@@ -184,6 +249,7 @@ const Explore = () => {
             onChange: (e) =>
               filterDispatch({ property: "tag", value: e.target.value }),
           }}
+          inputDivCSSProps={{ margin: "0" }}
           Icon={<AddCircleOutlineIcon />}
           iconClick={addNewTag}
           labelText="Tag length must be atleast 2 characters long"
@@ -193,6 +259,51 @@ const Explore = () => {
             <Tag key={tag} tag={tag} deletable deleteTag={deleteTag} />
           ))}
         </TagsDiv>
+        <Input
+          id="city-filter"
+          inputProps={{
+            required: true,
+            placeholder: "City",
+            value: filterState.city,
+            onChange: (e) =>
+              filterDispatch({ property: "city", value: e.target.value }),
+          }}
+        />
+        <Input
+          id="state-filter"
+          inputProps={{
+            required: true,
+            placeholder: "State",
+            value: filterState.state,
+            onChange: (e) =>
+              filterDispatch({ property: "state", value: e.target.value }),
+          }}
+        />
+        <Input
+          id="country-filter"
+          inputProps={{
+            required: true,
+            placeholder: "Country",
+            value: filterState.country,
+            onChange: (e) =>
+              filterDispatch({ property: "country", value: e.target.value }),
+          }}
+        />
+        <label htmlFor="slider-filter">Years of Experience</label>
+        <Slider
+          id="slider-filter"
+          aria-label="Years of Experience"
+          value={filterState.yeo === "" ? 0 : +filterState.yeo}
+          onChange={(_, value) => {
+            filterDispatch({
+              property: "yeo",
+              value: typeof value === "object" ? `${value[0]}` : `${value}`,
+            });
+          }}
+          valueLabelDisplay="auto"
+          min={0}
+          max={10}
+        />
         <div className={classes["filter-actions"]}>
           <Button
             variant="outlined"
@@ -226,6 +337,7 @@ const Explore = () => {
       {!isFetching && !isLoading && (
         <>
           <div className={classes.resumes}>
+            {resumes?.length === 0 && <h2>No marketplaces found</h2>}
             {activeResumes?.slice((page - 1) * 10, page * 10).map((resume) => (
               <ResumeItem key={resume.id} resume={resume} />
             ))}
@@ -262,6 +374,8 @@ const TagsDiv = styled.div`
   background-color: #e4e2e2;
   display: flex;
   flex-wrap: wrap;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 `;
 
 export default Explore;

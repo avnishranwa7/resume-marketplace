@@ -86,6 +86,7 @@ const router = createBrowserRouter([
       {
         path: "/explore",
         element: <Explore />,
+        loader: loaderFn,
       },
     ],
   },

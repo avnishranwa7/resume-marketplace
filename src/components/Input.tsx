@@ -15,6 +15,7 @@ interface InputType {
   minLength?: number;
   inputProps?: InputProps;
   inputCSSProps?: CSSProps;
+  inputDivCSSProps?: CSSProps;
   Icon?: ReactElement;
   iconClick?: () => void;
   error?: string;
@@ -26,6 +27,7 @@ const Input: FC<InputType> = ({
   minLength = 1,
   inputProps,
   inputCSSProps,
+  inputDivCSSProps,
   Icon,
   error,
   iconClick,
@@ -33,7 +35,7 @@ const Input: FC<InputType> = ({
   return (
     <>
       {labelText && <label htmlFor={id}>{labelText}</label>}
-      <InputDiv>
+      <InputDiv style={{ ...inputDivCSSProps }}>
         <input
           {...inputProps}
           id={id}
