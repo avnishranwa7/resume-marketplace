@@ -56,6 +56,10 @@
     margin-left: 30%;
   }
 
+  .resumes h2 {
+    margin: 0 auto;
+  }
+
   .filter-actions {
     display: flex;
     flex-direction: column;

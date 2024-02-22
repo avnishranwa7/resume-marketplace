@@ -27,6 +27,10 @@ export class MarketplaceService {
   static readonly getResumes = (data: {
     tags: Array<string>;
     page: number;
+    city?: string;
+    state?: string;
+    country?: string;
+    yeo?: string;
     offset?: number;
   }) => {
     return fetch(this.baseUrl + `/get-resumes`, {
@@ -35,6 +39,10 @@ export class MarketplaceService {
       body: JSON.stringify({
         tags: data.tags,
         page: data.page,
+        ...(data.city && { city: data.city }),
+        ...(data.state && { state: data.state }),
+        ...(data.country && { country: data.country }),
+        ...(data.yeo && { yeo: data.yeo }),
         ...(data.offset && { offset: data.offset }),
       }),
     });

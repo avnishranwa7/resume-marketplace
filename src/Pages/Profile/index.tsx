@@ -10,6 +10,7 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AbcIcon from "@mui/icons-material/Abc";
 import LanguageIcon from "@mui/icons-material/Language";
 import ReportGmailerrorredIcon from "@mui/icons-material/ReportGmailerrorred";
+import WorkIcon from "@mui/icons-material/Work";
 
 // styles imports
 import classes from "./index.module.css";
@@ -39,11 +40,12 @@ interface FormType {
   city: string;
   state: string;
   country: string;
+  yeo: string;
 }
 
 interface ActionType {
   property: string;
-  value: string;
+  value: string | number;
 }
 
 const initialFormState: FormType = {
@@ -52,6 +54,7 @@ const initialFormState: FormType = {
   city: "",
   state: "",
   country: "",
+  yeo: "",
 };
 
 function formReducer(state: FormType, action: ActionType) {
@@ -105,6 +108,10 @@ const Profile = () => {
       formDispatch({
         property: "country",
         value: transformedData.profile.location?.country ?? "",
+      });
+      formDispatch({
+        property: "yeo",
+        value: transformedData.profile.yeo ?? "",
       });
 
       return transformedData;
@@ -167,6 +174,7 @@ const Profile = () => {
       city: formState.city,
       state: formState.state,
       country: formState.country,
+      yeo: formState.yeo,
     });
 
     setSaving(false);
@@ -175,7 +183,7 @@ const Profile = () => {
       toast.error(data.message);
     } else {
       setProfileEditing(false);
-      toast.success("Profile updated");
+      toast.success("Profile Saved");
       client.invalidateQueries({ queryKey: ["user-profile"] });
     }
   }
@@ -270,6 +278,38 @@ const Profile = () => {
                 Icon={<LanguageIcon />}
               />
             </div>
+          )}
+        </div>
+        <div className={classes.yeo}>
+          {!profileEditing ? (
+            <>
+              <WorkIcon />
+              <span>
+                Years of Experience
+                {userProfile?.profile.yeo !== undefined &&
+                  `: ${userProfile?.profile.yeo}`}
+              </span>
+              {userProfile?.profile.yeo === undefined && (
+                <Tooltip title="Required">
+                  <ReportGmailerrorredIcon color="error" />
+                </Tooltip>
+              )}
+            </>
+          ) : (
+            <Input
+              id="user-yeo"
+              inputProps={{
+                type: "number",
+                value: formState.yeo,
+                placeholder: "Years of Experience",
+                onChange: (e) =>
+                  formDispatch({
+                    property: "yeo",
+                    value: e.target.value,
+                  }),
+              }}
+              Icon={<WorkIcon />}
+            />
           )}
         </div>
         <LoadingButton

@@ -22,6 +22,7 @@ export class UserService {
     city: string;
     state: string;
     country: string;
+    yeo: string;
   }) => {
     return fetch(this.baseUrl + `/user`, {
       method: "POST",
@@ -34,6 +35,7 @@ export class UserService {
         city: data.city,
         state: data.state,
         country: data.country,
+        yeo: data.yeo,
       }),
     });
   };

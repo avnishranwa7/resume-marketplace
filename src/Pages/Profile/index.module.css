@@ -18,6 +18,12 @@
   display: block;
 }
 
+.profile .yeo {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
 .profile label {
   align-self: flex-start;
 }
